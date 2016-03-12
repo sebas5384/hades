@@ -4,7 +4,7 @@
 [![Build Status][travis-image]][travis-url]
 [![Dependency Status][david_img]][david_site]
 
-![](./erb-logo.png)
+![](http://images1.fanpop.com/images/image_uploads/Hades-Hercules-disney-villains-1024542_720_480.jpg)
 
 > Live editing development on desktop app
 
