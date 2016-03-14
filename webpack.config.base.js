@@ -4,6 +4,9 @@
 const path = require('path');
 
 module.exports = {
+  entry: {
+    main: ['babel-polyfill', './main.js']
+  },
   module: {
     loaders: [{
       test: /\.jsx?$/,
