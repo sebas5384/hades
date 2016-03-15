@@ -32,3 +32,7 @@ node_modules
 # App packaged
 dist
 release
+
+# IDE's
+*.sublime-project
+*.sublime-workspace

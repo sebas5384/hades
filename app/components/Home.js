@@ -4,12 +4,13 @@ import styles from './Home.css';
 import {reduxForm} from 'redux-form';
 
 import ShellForm from './ShellForm';
+import ShellList from './ShellList';
 
 export default class Home extends Component {
   render() {
     return (
       <div>
-        <ShellForm />
+        <ShellList />
       </div>
     );
   }
