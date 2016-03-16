@@ -42,7 +42,7 @@ export default class ShellForm extends Component {
     } = this.props;
 
     const style = {
-      marginLeft: 20,
+      marginLeft: 20
     };
 
     return (
