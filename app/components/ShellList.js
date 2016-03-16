@@ -21,19 +21,19 @@ export default class ShellList extends Component {
   renderShellProps(item) {
     let itemProps = [];
 
-    if (item.hasOwnProperty('user')) {
+    if (item.hasOwnProperty('user') && item.user && item.user !== '') {
       itemProps = itemProps.concat(
         <ListItem primaryText={item.user} leftIcon={<ActionAccountCircle />} />
       )
     }
 
-    if (item.hasOwnProperty('host')) {
+    if (item.hasOwnProperty('host') && item.host && item.host !== '') {
       itemProps = itemProps.concat(
         <ListItem primaryText={item.host} leftIcon={<FileCloud />} />
       )
     }
 
-    if (item.hasOwnProperty('identityFile')) {
+    if (item.hasOwnProperty('identityFile') && item.identityFile && item.identityFile !== '') {
       itemProps = itemProps.concat(
         <ListItem primaryText={item.identityFile} leftIcon={<CommunicationVpnKey />} />
       )

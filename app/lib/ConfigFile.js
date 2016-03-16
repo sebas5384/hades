@@ -20,7 +20,7 @@ export default function ConfigFile(settings = initialSettings) {
     }
     else {
       newItemsStr = items.reduce((prevItem, nextItem) => {
-        const prevItemStr = formatItemToHostAlias(prevItem);
+        const prevItemStr = typeof prevItem === 'object' && formatItemToHostAlias(prevItem) || prevItem;
         const nextItemStr = formatItemToHostAlias(nextItem);
 
         return prevItemStr.concat(nextItemStr);
@@ -28,6 +28,7 @@ export default function ConfigFile(settings = initialSettings) {
     }
 
     return currentConfig
+      .trim()
       .concat("\n", settings.startTag)
       .concat(newItemsStr)
       .concat("\n", settings.endTag)
@@ -44,19 +45,19 @@ export default function ConfigFile(settings = initialSettings) {
   const formatItemToHostAlias = (item) => {
     let shellStr = "\n";
 
-    if (item.hasOwnProperty('alias') && item.alias) {
+    if (item.hasOwnProperty('alias') && item.alias !== '') {
       shellStr = shellStr.concat("Host ", item.alias);
     }
 
-    if (item.hasOwnProperty('host') && item.host) {
+    if (item.hasOwnProperty('host') && item.host !== '') {
       shellStr = shellStr.concat("\n  Hostname ", item.host);
     }
 
-    if (item.hasOwnProperty('user') && item.user) {
+    if (item.hasOwnProperty('user') && item.user !== '') {
       shellStr = shellStr.concat("\n  User ", item.user);
     }
 
-    if (item.hasOwnProperty('identityFile') && item.identityFile) {
+    if (item.hasOwnProperty('identityFile') && item.identityFile !== '') {
       shellStr = shellStr.concat("\n  IdentityFile ", item.identityFile);
     }
 

@@ -9,6 +9,7 @@ export default class HomePage extends Component {
   render() {
     const style = {
       marginTop: 10,
+      marginBottom: 10
     }
 
     const subheaderStyle = {
