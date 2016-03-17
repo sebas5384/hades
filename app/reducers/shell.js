@@ -4,11 +4,14 @@ import {
   LOAD,
   ADD,
   SAVE,
-  REMOVE
+  REMOVE,
+  SHOW_ADD_FORM,
+  HIDE_ADD_FORM
 } from '../actions/shell';
 
 const initialState = {
-  items: []
+  items: [],
+  showAddForm: true
 }
 
 export default function reducer(state = initialState, action) {
@@ -30,6 +33,18 @@ export default function reducer(state = initialState, action) {
       configFile.sync(updatedContent);
 
       return newState;
+
+    case SHOW_ADD_FORM:
+      return {
+        ...state,
+        showAddForm: true
+      }
+
+    case HIDE_ADD_FORM:
+      return {
+        ...state,
+        showAddForm: false
+      }
 
     default:
       return state;

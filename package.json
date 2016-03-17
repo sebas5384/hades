@@ -95,6 +95,7 @@
     "css-modules-require-hook": "^3.0.0",
     "electron-debug": "^0.5.2",
     "font-awesome": "^4.4.0",
+    "lru-memoize": "^1.0.1",
     "material-ui": "^0.14.4",
     "postcss": "^5.0.18",
     "react": "^0.14.2",

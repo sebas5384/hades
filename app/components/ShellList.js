@@ -1,6 +1,7 @@
 import React, { Component, PropTypes } from 'react';
 import List from 'material-ui/lib/lists/list'
 import ListItem from 'material-ui/lib/lists/list-item'
+import Divider from 'material-ui/lib/divider';
 import ActionGrade from 'material-ui/lib/svg-icons/action/grade'
 import ContentInbox from 'material-ui/lib/svg-icons/content/inbox'
 import ContentDrafts from 'material-ui/lib/svg-icons/content/drafts'
@@ -46,14 +47,21 @@ export default class ShellList extends Component {
     const { items } = this.props;
     return (
       <List {...this.props} >
-        {items && items.map((item) =>
-          <ListItem
-            primaryText={item.alias}
-            leftIcon={<DevicesIcon />}
-            initiallyOpen={true}
-            primaryTogglesNestedList={true}
-            nestedItems={this.renderShellProps(item)}
-          />
+        {items && items.map((item, key) =>
+          (
+            <div>
+              <Divider />
+              <ListItem
+                key={key}
+                primaryText={item.alias}
+                leftIcon={<DevicesIcon />}
+                initiallyOpen={true}
+                primaryTogglesNestedList={true}
+                nestedItems={this.renderShellProps(item)}
+                initiallyOpen={key === 0}
+              />
+            </div>
+          )
         )}
       </List>
     )

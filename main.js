@@ -27,7 +27,10 @@ app.on('window-all-closed', () => {
 
 
 app.on('ready', () => {
-  mainWindow = new BrowserWindow({ width: 1024, height: 728 });
+  mainWindow = new BrowserWindow({
+    width: 410, height: 740,
+    minWidth: 410, minHeight: 740
+  });
 
   mainWindow.loadURL(`file://${__dirname}/app/app.html`);
 
@@ -41,9 +44,9 @@ app.on('ready', () => {
 
   if (process.platform === 'darwin') {
     template = [{
-      label: 'Electron',
+      label: 'Hades',
       submenu: [{
-        label: 'About ElectronReact',
+        label: 'About Hades',
         selector: 'orderFrontStandardAboutPanel:'
       }, {
         type: 'separator'
@@ -53,7 +56,7 @@ app.on('ready', () => {
       }, {
         type: 'separator'
       }, {
-        label: 'Hide ElectronReact',
+        label: 'Hide Hade',
         accelerator: 'Command+H',
         selector: 'hide:'
       }, {

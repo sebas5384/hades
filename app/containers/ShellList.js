@@ -17,7 +17,7 @@ export default class ShellListContainer extends Component {
     const { items } = this.props;
 
     return (
-      <ShellList {...this.props} subheader={subheader} items={items} />
+      <ShellList {...this.props} subheader={subheader} items={items.reverse()} />
     );
   }
 }
