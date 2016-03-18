@@ -11,7 +11,7 @@ import {
 
 const initialState = {
   items: [],
-  showAddForm: true
+  showingAddForm: true
 }
 
 export default function reducer(state = initialState, action) {
@@ -37,13 +37,13 @@ export default function reducer(state = initialState, action) {
     case SHOW_ADD_FORM:
       return {
         ...state,
-        showAddForm: true
+        showingAddForm: true
       }
 
     case HIDE_ADD_FORM:
       return {
         ...state,
-        showAddForm: false
+        showingAddForm: false
       }
 
     default:

@@ -8,33 +8,36 @@ import Divider from 'material-ui/lib/divider';
 import FloatingActionButton from 'material-ui/lib/floating-action-button';
 import ContentAdd from 'material-ui/lib/svg-icons/content/add';
 
-import {showAddForm, hideAddForm} from '../actions/shell';
+import {showAddForm as showAddShellForm, hideAddForm as hideAddShellForm} from '../actions/shell';
 
 @connect(
-  state => ({showShellForm: state.shell.showAddForm}),
-  dispatch => bindActionCreators({showAddForm, hideAddForm}, dispatch)
+  state => ({
+    showingShellForm: state.shell.showingAddForm,
+    shellItems: state.shell.items
+  }),
+  dispatch => bindActionCreators({showAddShellForm, hideAddShellForm}, dispatch)
 )
 export default class HomePage extends Component {
 
   static propTypes = {
-    showShellForm: PropTypes.bool.required,
-    showAddForm: PropTypes.func.required,
-    hideAddForm: PropTypes.func.required
+    showingShellForm: PropTypes.bool.isRequired,
+    showAddShellForm: PropTypes.func.isRequired,
+    hideAddShellForm: PropTypes.func.isRequired
   }
 
   handleShellAddActionButton(event) {
     // Toggle.
-    if (this.props.showShellForm) {
-      this.props.hideAddForm();
+    if (this.props.showingShellForm) {
+      this.props.hideAddShellForm();
     }
     else {
-      this.props.showAddForm();
+      this.props.showAddShellForm();
     }
     return true;
   }
 
   render() {
-    const {showShellForm} = this.props;
+    const {showingShellForm, shellItems} = this.props;
 
     const style = {
       marginTop: 10,
@@ -51,26 +54,26 @@ export default class HomePage extends Component {
       top: '1em'
     }
 
-    // Rotate add action to appear as an X.
-    if (showShellForm) {
-      shellAddActionButtonStyle = {
-        ...shellAddActionButtonStyle,
-        transform: 'rotate(43deg)'
-      }
-    }
-
     return (
       <div>
-        {showShellForm &&
+        {showingShellForm &&
           <ShellAddForm />
         }
-        <ShellList subheaderStyle={subheaderStyle} style={style} />
-        <FloatingActionButton
-          onMouseUp={this.handleShellAddActionButton.bind(this)}
-          style={shellAddActionButtonStyle}
-        >
-          <ContentAdd />
-        </FloatingActionButton>
+
+        {shellItems.length > 0 &&
+          <ShellList subheaderStyle={subheaderStyle} style={style} />
+        }
+
+        {shellItems.length > 0 &&
+          <FloatingActionButton
+            onMouseUp={this.handleShellAddActionButton.bind(this)}
+            style={shellAddActionButtonStyle}
+            iconStyle={showingShellForm && {transform: 'rotate(112deg)'} || {}}
+            secondary={showingShellForm}
+          >
+            <ContentAdd />
+          </FloatingActionButton>
+        }
       </div>
     );
   }

@@ -19,6 +19,7 @@ export default class ShellForm extends Component {
     handleSubmit: PropTypes.func.isRequired,
     resetForm: PropTypes.func.isRequired,
     submitting: PropTypes.bool.isRequired,
+    errors: PropTypes.object.isRequired
   };
 
   render() {
@@ -26,7 +27,8 @@ export default class ShellForm extends Component {
       fields: {alias, host, user, identityFile},
       handleSubmit,
       resetForm,
-      submitting
+      submitting,
+      errors
     } = this.props;
 
     const fieldStyle = {
@@ -43,6 +45,8 @@ export default class ShellForm extends Component {
       paddingTop: 10
     }
 
+    const hasErrors = (Object.keys(errors).length !== 0)
+
     return (
       <Card style={style}>
         <form onSubmit={handleSubmit}>
@@ -56,17 +60,15 @@ export default class ShellForm extends Component {
           />
           <TextField fullWidth={true} style={fieldStyle} hintText="User (Ex: root)" {...user} />
           <TextField fullWidth={true} style={fieldStyle} hintText="Identity File (Ex: ~/.ssh/myproject.pem)" {...identityFile} />
-          <CardActions style={actionsStyle}>
-            <RaisedButton type="submit" label={submitting ? 'Saving' : 'Save'} primary={true} disabled={submitting} />
-            <FlatButton label="Clear values" disabled={submitting} onClick={resetForm} />
-          </CardActions>
+
+          {!hasErrors &&
+            <CardActions style={actionsStyle}>
+              <RaisedButton type="submit" label={submitting ? 'Saving' : 'Save'} primary={true} disabled={submitting} />
+              <FlatButton label="Clear values" disabled={submitting} onClick={resetForm} />
+            </CardActions>
+          }
         </form>
       </Card>
     );
   }
 }
-
-// export default reduxForm({
-//   form: 'ShellForm',
-//   fields
-// })(ShellForm);

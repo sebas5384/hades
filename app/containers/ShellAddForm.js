@@ -14,8 +14,7 @@ import ShellAddFormValidation from '../validations/ShellAddFormValidation'
 @reduxForm({
   form: 'ShellAddForm',
   fields: ['alias', 'host', 'user', 'identityFile'],
-  validate: ShellAddFormValidation,
-  touchOnBlur: false
+  validate: ShellAddFormValidation
 })
 export default class ShellAddForm extends Component {
 

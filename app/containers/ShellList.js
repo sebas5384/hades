@@ -16,8 +16,10 @@ export default class ShellListContainer extends Component {
     const subheader = 'Your Shells';
     const { items } = this.props;
 
+    const itemsSorted = items.slice().reverse()
+
     return (
-      <ShellList {...this.props} subheader={subheader} items={items.reverse()} />
+      <ShellList {...this.props} subheader={subheader} items={itemsSorted} />
     );
   }
 }
