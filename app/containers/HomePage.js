@@ -8,14 +8,20 @@ import Divider from 'material-ui/lib/divider';
 import FloatingActionButton from 'material-ui/lib/floating-action-button';
 import ContentAdd from 'material-ui/lib/svg-icons/content/add';
 
-import {showAddForm as showAddShellForm, hideAddForm as hideAddShellForm} from '../actions/shell';
+import {
+  showAddForm as showAddShellForm,
+  hideAddForm as hideAddShellForm,
+  syncFromLocal
+} from '../actions/shell';
 
 @connect(
   state => ({
     showingShellForm: state.shell.showingAddForm,
     shellItems: state.shell.items
   }),
-  dispatch => bindActionCreators({showAddShellForm, hideAddShellForm}, dispatch)
+  dispatch => bindActionCreators({
+    showAddShellForm, hideAddShellForm, syncFromLocal
+  }, dispatch)
 )
 export default class HomePage extends Component {
 
@@ -36,12 +42,16 @@ export default class HomePage extends Component {
     return true;
   }
 
+  componentWillMount() {
+    this.props.syncFromLocal()
+  }
+
   render() {
     const {showingShellForm, shellItems} = this.props;
 
-    const style = {
+    const shellListStyle = {
       marginTop: 10,
-      marginBottom: 10
+      marginBottom: '3em'
     }
 
     const subheaderStyle = {
@@ -61,7 +71,7 @@ export default class HomePage extends Component {
         }
 
         {shellItems.length > 0 &&
-          <ShellList subheaderStyle={subheaderStyle} style={style} />
+          <ShellList subheaderStyle={subheaderStyle} style={shellListStyle} />
         }
 
         {shellItems.length > 0 &&

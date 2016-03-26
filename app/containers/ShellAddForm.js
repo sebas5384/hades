@@ -1,6 +1,6 @@
 import React, { Component, PropTypes } from 'react';
 import {reduxForm} from 'redux-form';
-import ShellForm from '../components/ShellForm';
+import ShellForm, {fieldNames} from '../components/ShellForm';
 import {add as addShell, hideAddForm} from '../actions/shell';
 import {bindActionCreators} from 'redux'
 import {connect} from 'react-redux'
@@ -13,7 +13,7 @@ import ShellAddFormValidation from '../validations/ShellAddFormValidation'
 )
 @reduxForm({
   form: 'ShellAddForm',
-  fields: ['alias', 'host', 'user', 'identityFile'],
+  fields: fieldNames,
   validate: ShellAddFormValidation
 })
 export default class ShellAddForm extends Component {
@@ -23,18 +23,31 @@ export default class ShellAddForm extends Component {
     handleSubmit: PropTypes.func.isRequired,
     resetForm: PropTypes.func.isRequired,
     submitting: PropTypes.bool.isRequired
-  };
+  }
+
+  static defaultProps = {
+    title: 'Create your Shell'
+  }
 
   handleFormSubmit(data) {
-    this.props.hideAddForm();
-    this.props.resetForm();
-    return this.props.addShell(data);
+    const {dispatch, resetForm} = this.props
+
+    return new Promise((resolve, reject) => {
+      setTimeout(() => resolve(data), 1000)
+    })
+    .then(() => {
+      dispatch(hideAddForm())
+      dispatch(resetForm())
+      return dispatch(addShell(data))
+    })
   }
 
   render() {
     const {handleSubmit} = this.props;
     return (
-      <ShellForm {...this.props} handleSubmit={handleSubmit(this.handleFormSubmit.bind(this))} />
+      <div>
+        <ShellForm {...this.props} handleSubmit={handleSubmit(this.handleFormSubmit.bind(this))} />
+      </div>
     );
   }
 }

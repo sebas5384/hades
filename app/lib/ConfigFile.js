@@ -1,4 +1,5 @@
-import fs from 'fs';
+import fs from 'fs'
+import sshConfig from 'ssh-config'
 
 const initialSettings = {
   srcPath: '/Users/sebas/.ssh/config',
@@ -8,68 +9,103 @@ const initialSettings = {
 
 export default function ConfigFile(settings = initialSettings) {
 
-  const update = items => {
-    if (items.length < 0) return false;
+  const update = (items) => {
 
-    const currentConfig = getOriginal();
+    const newConfig = sshConfig.parse('')
+    // Convert items to the config format and append to the new config.
+    items.forEach((item) => {
+      const convertedItem = convertToConfigFormat(item)
+      newConfig.append(convertedItem)
+    })
 
-    let newItemsStr = '';
+    const newConfigString = sshConfig.stringify(newConfig);
 
-    if (items.length === 1) {
-      newItemsStr = formatItemToHostAlias(items[0]);
-    }
-    else {
-      newItemsStr = items.reduce((prevItem, nextItem) => {
-        const prevItemStr = typeof prevItem === 'object' && formatItemToHostAlias(prevItem) || prevItem;
-        const nextItemStr = formatItemToHostAlias(nextItem);
+    const unmanagedConfig = readUnmanagedLocalConfig()
 
-        return prevItemStr.concat(nextItemStr);
-      });
-    }
-
-    return currentConfig
+    return unmanagedConfig
       .trim()
       .concat("\n", settings.startTag)
-      .concat(newItemsStr)
+      .concat("\n", newConfigString)
       .concat("\n", settings.endTag)
   }
 
-  const getOriginal = (srcPath = settings.srcPath) => {
-    const configFile = fs.readFileSync(srcPath);
-    // @TODO: Use startTag and endTag vars.
-    const sectionRegex = /### HADES ### START ### DON'T EDIT ###[\s\S]*### HADES ### END ### DON'T EDIT #####/m;
+  const loadFromLocal = () => {
+    const managedConfig = readManagedLocalConfig()
+    const config = sshConfig.parse(managedConfig)
 
-    return configFile.toString().replace(sectionRegex, '');
+    // Return an empty array in case the local file is empty.
+    if (!0 in config) return []
+
+    // Extract items.
+    const items = Object.keys(config)
+      .filter((key) => {
+        const index = Number(key)
+        return Number.isInteger(index)
+      })
+      .map((key) => config[key])
+      .map((item) => convertToAppFormat(item))
+
+    return items
   }
 
-  const formatItemToHostAlias = (item) => {
-    let shellStr = "\n";
+  const readLocalConfig = (srcPath = settings.srcPath) => fs.readFileSync(srcPath)
 
-    if (item.hasOwnProperty('alias') && item.alias !== '') {
-      shellStr = shellStr.concat("Host ", item.alias);
-    }
+  const readManagedLocalConfig = (srcPath) => {
+    const configFile = readLocalConfig(srcPath)
+    // @TODO: Use startTag and endTag vars.
+    const regex = /### HADES ### START ### DON'T EDIT ###([\s\S]*)### HADES ### END ### DON'T EDIT #####/m;
+    const configString = configFile.toString()
+    const match = configString.match(regex);
 
-    if (item.hasOwnProperty('host') && item.host !== '') {
-      shellStr = shellStr.concat("\n  Hostname ", item.host);
-    }
+    return (match && match.length > 1) ? match[1].trim() : ''
+  }
 
-    if (item.hasOwnProperty('user') && item.user !== '') {
-      shellStr = shellStr.concat("\n  User ", item.user);
-    }
+  const readUnmanagedLocalConfig = (srcPath) => {
+    const configFile = readLocalConfig(srcPath)
+    // @TODO: Use startTag and endTag vars.
+    const regex = /### HADES ### START ### DON'T EDIT ###[\s\S]*### HADES ### END ### DON'T EDIT #####/m;
 
-    if (item.hasOwnProperty('identityFile') && item.identityFile !== '') {
-      shellStr = shellStr.concat("\n  IdentityFile ", item.identityFile);
-    }
-
-    return shellStr;
+    return configFile.toString().replace(regex, '').trim();
   }
 
   const sync = (content, srcPath = settings.srcPath) => {
     return fs.writeFile(srcPath, content);
   }
 
+  // Public methods.
   return {
     update,
+    loadFromLocal,
     sync
   }
+}
+
+/*
+ * Convert form data to config format.
+ */
+export const convertToConfigFormat = (data) => {
+  return Object.keys(data)
+    .filter((fieldName) => data[fieldName])
+    .reduce((item, fieldName) => {
+      const capitalizedField = fieldName.charAt(0).toUpperCase() + fieldName.slice(1)
+      return {
+        ...item,
+        [capitalizedField]: data[fieldName]
+      }
+    }, {})
+}
+
+/*
+ * Convert config format to apps format.
+ */
+export const convertToAppFormat = (data) => {
+  return Object.keys(data)
+    .filter((fieldName) => data[fieldName])
+    .reduce((item, fieldName) => {
+      const loweredField = fieldName.charAt(0).toLowerCase() + fieldName.slice(1)
+      return {
+        ...item,
+        [loweredField]: data[fieldName]
+      }
+    }, {})
 }

@@ -13,30 +13,35 @@ import ActionAccountCircle from 'material-ui/lib/svg-icons/action/account-box'
 export default class ShellList extends Component {
 
   static propTypes = {
+    initiallyOpen: PropTypes.bool,
     items: PropTypes.array.isRequired,
     style: PropTypes.object,
     subheader: PropTypes.string,
     subheaderStyle: PropTypes.object
   }
 
-  renderShellProps(item) {
+  static defaultProps = {
+    initiallyOpen: false
+  }
+
+  renderShellItem(item) {
     let itemProps = [];
 
     if (item.hasOwnProperty('user') && item.user && item.user !== '') {
       itemProps = itemProps.concat(
-        <ListItem disabled={true} primaryText={item.user} leftIcon={<ActionAccountCircle />} />
+        <ListItem key='1' disabled={true} primaryText={item.user} leftIcon={<ActionAccountCircle />} />
       )
     }
 
-    if (item.hasOwnProperty('host') && item.host && item.host !== '') {
+    if (item.hasOwnProperty('hostName') && item.hostName && item.hostName !== '') {
       itemProps = itemProps.concat(
-        <ListItem disabled={true} primaryText={item.host} leftIcon={<FileCloud />} />
+        <ListItem key='2' disabled={true} primaryText={item.hostName} leftIcon={<FileCloud />} />
       )
     }
 
     if (item.hasOwnProperty('identityFile') && item.identityFile && item.identityFile !== '') {
       itemProps = itemProps.concat(
-        <ListItem disabled={true} primaryText={item.identityFile} leftIcon={<CommunicationVpnKey />} />
+        <ListItem key='3' disabled={true} primaryText={item.identityFile} leftIcon={<CommunicationVpnKey />} />
       )
     }
 
@@ -44,11 +49,11 @@ export default class ShellList extends Component {
   }
 
   render() {
-    const { items } = this.props;
+    const { items, initiallyOpen } = this.props;
 
-    const PrimaryText = ({alias}) => (
+    const PrimaryText = ({host}) => (
       <div>
-        {'ssh '}<strong>{alias}</strong>
+        {'ssh '}<strong>{host}</strong>
       </div>
     )
 
@@ -56,15 +61,14 @@ export default class ShellList extends Component {
       <List {...this.props} >
         {items && items.map((item, key) =>
           (
-            <div>
+            <div key={key + item.hostName}>
               <Divider />
               <ListItem
-                key={key + item.alias}
-                primaryText={<PrimaryText alias={item.alias} />}
+                primaryText={<PrimaryText host={item.host} />}
                 leftIcon={<DeviceStorage />}
                 primaryTogglesNestedList={true}
-                nestedItems={this.renderShellProps(item)}
-                initiallyOpen={key === 0}
+                nestedItems={this.renderShellItem(item)}
+                initiallyOpen={key === 0 && initiallyOpen}
               />
             </div>
           )

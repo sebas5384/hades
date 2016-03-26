@@ -6,7 +6,8 @@ import {connect} from 'react-redux'
 
 @connect(
   state => ({
-    items: state.shell.items
+    items: state.shell.items,
+    initiallyOpen: state.shell.initiallyOpen
   })
   // dispatch => bindActionCreators({addShell}, dispatch)
 )

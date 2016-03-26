@@ -1,6 +1,8 @@
 import fs from 'fs'
+import ConfigFile from '../lib/ConfigFile';
 
 export const LOAD = 'shell/LOAD'
+export const SYNC_FROM_LOCAL = 'shell/SYNC_FROM_LOCAL'
 export const ADD = 'shell/ADD'
 export const SAVE = 'shell/SAVE'
 export const REMOVE = 'shell/REMOVE'
@@ -14,10 +16,19 @@ export function load(id) {
 }
 
 export function add(data) {
-  // @TODO: Actions of config file updating.
   return {
     type: ADD,
     payload: data
+  }
+}
+
+export function syncFromLocal() {
+  const configFile = ConfigFile()
+  const localConfigItems = configFile.loadFromLocal()
+
+  return {
+    type: SYNC_FROM_LOCAL,
+    payload: localConfigItems
   }
 }
 
