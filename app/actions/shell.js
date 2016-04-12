@@ -8,6 +8,8 @@ export const SAVE = 'shell/SAVE'
 export const REMOVE = 'shell/REMOVE'
 export const SHOW_ADD_FORM = 'shell/ADD/form/SHOW'
 export const HIDE_ADD_FORM = 'shell/ADD/form/HIDE'
+export const SHOW_EDIT_FORM = 'shell/EDIT/form/SHOW'
+export const HIDE_EDIT_FORM = 'shell/EDIT/form/HIDE'
 
 export function load(id) {
   return {
@@ -53,5 +55,20 @@ export function showAddForm() {
 export function hideAddForm() {
   return {
     type: HIDE_ADD_FORM
+  }
+}
+
+export function showEditForm(host) {
+  return {
+    type: SHOW_EDIT_FORM,
+    payload: {
+      host
+    }
+  }
+}
+
+export function hideEditForm() {
+  return {
+    type: HIDE_EDIT_FORM
   }
 }
