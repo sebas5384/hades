@@ -36,7 +36,8 @@ export function syncFromLocal() {
 
 export function save(data) {
   return {
-    type: SAVE
+    type: SAVE,
+    payload: data
   }
 }
 

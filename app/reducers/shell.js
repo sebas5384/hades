@@ -20,6 +20,9 @@ const initialState = {
 }
 
 export default function reducer(state = initialState, action) {
+
+  const configFile = ConfigFile()
+
   switch (action.type) {
     case ADD:
 
@@ -33,19 +36,25 @@ export default function reducer(state = initialState, action) {
       }
 
       // @TODO: Should have an action.
-      const configFile = ConfigFile();
-      const updatedContent = configFile.update(items);
+      var updatedContent = configFile.update(items);
       // Sync to config file.
       configFile.sync(updatedContent);
 
       return newState;
 
     case SAVE:
+      // @TODO: Remove this to an action.
+      const newItems = state.items.map(shell => {
+        return shell.host === action.payload.host ? { ...shell, ...action.payload } : shell
+      })
+
+      var updatedContent = configFile.update(newItems)
+      // Sync to config file.
+      configFile.sync(updatedContent)
+
       return {
         ...state,
-        items: state.items.map(shell => {
-          return shell.host === action.payload.host ? { ...shell, ...action.payload } : shell
-        })
+        items: newItems
       }
 
     case SYNC_FROM_LOCAL:
