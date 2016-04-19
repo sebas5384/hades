@@ -43,10 +43,11 @@ export default class HomePage extends Component {
   handleShellAddActionButton(event) {
     // Toggle.
     if (this.props.showingShellForm) {
-      this.props.hideAddShellForm();
+      this.props.hideAddShellForm()
     }
     else {
-      this.props.showAddShellForm();
+      this.props.showAddShellForm()
+      this.props.hideEditShellForm()
     }
     return true;
   }

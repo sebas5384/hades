@@ -43,9 +43,8 @@ export default function reducer(state = initialState, action) {
       return newState;
 
     case SAVE:
-      // @TODO: Remove this to an action.
       const newItems = state.items.map(shell => {
-        return shell.host === action.payload.host ? { ...shell, ...action.payload } : shell
+        return shell.id === action.payload.id ? { ...shell, ...action.payload } : shell
       })
 
       var updatedContent = configFile.update(newItems)
@@ -55,6 +54,20 @@ export default function reducer(state = initialState, action) {
       return {
         ...state,
         items: newItems
+      }
+
+    case REMOVE:
+      const notRemovedItems = state.items.filter(shell => {
+        return shell.id != action.payload.id
+      })
+
+      var updatedContent = configFile.update(notRemovedItems)
+      // Sync to config file.
+      configFile.sync(updatedContent)
+
+      return {
+        ...state,
+        items: notRemovedItems
       }
 
     case SYNC_FROM_LOCAL:
@@ -80,7 +93,7 @@ export default function reducer(state = initialState, action) {
       return {
         ...state,
         showingEditForm: true,
-        editingHost: action.payload.host
+        editingHost: action.payload.id
       }
 
     case HIDE_EDIT_FORM:

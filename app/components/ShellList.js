@@ -24,7 +24,8 @@ export default class ShellList extends Component {
     style: PropTypes.object,
     subheader: PropTypes.string,
     subheaderStyle: PropTypes.object,
-    handleShowEditForm: PropTypes.func.isRequired
+    handleShowEditForm: PropTypes.func.isRequired,
+    handleRemove: PropTypes.func
   }
 
   static defaultProps = {
@@ -55,22 +56,19 @@ export default class ShellList extends Component {
     return itemProps;
   }
 
-  renderRightIconMenu(host) {
+  renderRightIconMenu(id) {
 
     const iconButtonElement = (
       <IconButton
-        touch={true}
-        tooltip="more"
-        tooltipPosition="bottom-left"
-      >
+        touch={true}>
         <MoreVertIcon color={Colors.grey400} />
       </IconButton>
     )
 
     return (
       <IconMenu iconButtonElement={iconButtonElement}>
-        <MenuItem onTouchTap={this.props.handleShowEditForm(host)}>Edit</MenuItem>
-        <MenuItem>Delete</MenuItem>
+        <MenuItem onTouchTap={this.props.handleShowEditForm(id)}>Edit</MenuItem>
+        <MenuItem onTouchTap={this.props.handleRemove(id)}>Delete</MenuItem>
       </IconMenu>
     )
   }
@@ -93,7 +91,7 @@ export default class ShellList extends Component {
               <ListItem
                 primaryText={<PrimaryText host={item.host} />}
                 leftIcon={<DeviceStorage />}
-                rightIconButton={this.renderRightIconMenu(item.host)}
+                rightIconButton={this.renderRightIconMenu(item.id)}
                 primaryTogglesNestedList={true}
                 nestedItems={this.renderShellItem(item)}
                 initiallyOpen={key === 0 && initiallyOpen}

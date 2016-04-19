@@ -13,7 +13,7 @@ import RaisedButton from 'material-ui/lib/raised-button'
 import FlatButton from 'material-ui/lib/flat-button'
 import CircularProgress from 'material-ui/lib/circular-progress';
 
-export const fieldNames = ['host', 'hostName', 'user', 'identityFile']
+export const fieldNames = ['id', 'host', 'hostName', 'user', 'identityFile']
 
 export default class ShellForm extends Component {
 
@@ -23,7 +23,8 @@ export default class ShellForm extends Component {
     resetForm: PropTypes.func.isRequired,
     submitting: PropTypes.bool.isRequired,
     errors: PropTypes.object.isRequired,
-    title: PropTypes.string
+    title: PropTypes.string,
+    hideReset: PropTypes.bool
   }
 
   render() {
@@ -33,7 +34,8 @@ export default class ShellForm extends Component {
       resetForm,
       submitting,
       errors,
-      title
+      title,
+      hideReset
     } = this.props
 
     const fieldStyle = {
@@ -75,7 +77,7 @@ export default class ShellForm extends Component {
               primary={true}
               disabled={submitting || hasErrors}
             />
-            <FlatButton label="Clear values" disabled={submitting} onClick={resetForm} />
+            <FlatButton style={hideReset ? {display: 'none'} : {}} label="Clear values" disabled={submitting} onClick={resetForm} />
           </CardActions>
           {submitting &&
             <CircularProgress style={{margin: '1em auto', display: 'block'}} />

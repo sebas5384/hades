@@ -1,4 +1,5 @@
 import fs from 'fs'
+import uuid from 'uuid'
 import ConfigFile from '../lib/ConfigFile';
 
 export const LOAD = 'shell/LOAD'
@@ -13,14 +14,18 @@ export const HIDE_EDIT_FORM = 'shell/EDIT/form/HIDE'
 
 export function load(id) {
   return {
-    type: LOAD
+    type: LOAD,
+    payload: {id}
   }
 }
 
 export function add(data) {
   return {
     type: ADD,
-    payload: data
+    payload: {
+      ...data,
+      id: uuid.v4()
+    }
   }
 }
 
@@ -42,8 +47,17 @@ export function save(data) {
 }
 
 export function remove(id) {
-  return {
-    type: REMOVE
+  return (dispatch, getState) => {
+
+    // Show add form when is the last item.
+    if (getState().shell.items.length === 1) {
+      dispatch(showAddForm())
+    }
+
+    return dispatch({
+      type: REMOVE,
+      payload: {id}
+    })
   }
 }
 
@@ -59,11 +73,11 @@ export function hideAddForm() {
   }
 }
 
-export function showEditForm(host) {
+export function showEditForm(id) {
   return {
     type: SHOW_EDIT_FORM,
     payload: {
-      host
+      id
     }
   }
 }

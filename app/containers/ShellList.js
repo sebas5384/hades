@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import ShellList from '../components/ShellList';
-import {showEditForm} from '../actions/shell';
+import {showEditForm, remove as removeShell} from '../actions/shell';
 import {bindActionCreators} from 'redux'
 import {connect} from 'react-redux'
 
@@ -9,14 +9,21 @@ import {connect} from 'react-redux'
     items: state.shell.items,
     initiallyOpen: state.shell.initiallyOpen
   }),
-  dispatch => bindActionCreators({showEditForm}, dispatch)
+  dispatch => bindActionCreators({showEditForm, removeShell}, dispatch)
 )
 export default class ShellListContainer extends Component {
 
-  handleShowEditForm(host) {
+  handleShowEditForm(id) {
     const showEditFormAction = this.props.showEditForm
     return () => {
-      showEditFormAction(host)
+      showEditFormAction(id)
+    }
+  }
+
+  handleDelete(id) {
+    const removeShell = this.props.removeShell
+    return () => {
+      removeShell(id)
     }
   }
 
@@ -27,7 +34,11 @@ export default class ShellListContainer extends Component {
     const itemsSorted = items.slice().reverse()
 
     return (
-      <ShellList {...this.props} handleShowEditForm={this.handleShowEditForm.bind(this)} subheader={subheader} items={itemsSorted} />
+      <ShellList {...this.props}
+        handleShowEditForm={this.handleShowEditForm.bind(this)}
+        handleRemove={this.handleDelete.bind(this)}
+        subheader={subheader}
+        items={itemsSorted} />
     );
   }
 }

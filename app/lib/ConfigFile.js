@@ -87,13 +87,18 @@ export const convertToConfigFormat = (data) => {
   return Object.keys(data)
     .filter((fieldName) => data[fieldName])
     .reduce((item, fieldName) => {
-      const capitalizedField = fieldName.charAt(0).toUpperCase() + fieldName.slice(1)
+      // Field name id has to be "#HostId", which is a comment.
+      const convertedFieldName = (fieldName == 'id') ? '#HostId' : capitalizeField(fieldName)
+
       return {
         ...item,
-        [capitalizedField]: data[fieldName]
+        [convertedFieldName]: data[fieldName]
       }
     }, {})
 }
+
+const capitalizeField = (name) => name.charAt(0).toUpperCase() + name.slice(1)
+const unCapitalizeField = (name) => name.charAt(0).toLowerCase() + name.slice(1)
 
 /*
  * Convert config format to apps format.
@@ -102,10 +107,11 @@ export const convertToAppFormat = (data) => {
   return Object.keys(data)
     .filter((fieldName) => data[fieldName])
     .reduce((item, fieldName) => {
-      const loweredField = fieldName.charAt(0).toLowerCase() + fieldName.slice(1)
+      const convertedFieldName = (fieldName == '#HostId') ? 'id' : unCapitalizeField(fieldName)
+
       return {
         ...item,
-        [loweredField]: data[fieldName]
+        [convertedFieldName]: data[fieldName]
       }
     }, {})
 }

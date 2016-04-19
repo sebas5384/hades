@@ -19,7 +19,7 @@ import ShellEditFormValidation from '../validations/ShellEditFormValidation'
   },
   state => ({
     initialValues: state.shell.items.filter(shell => {
-      return shell.host == state.shell.editingHost
+      return shell.id == state.shell.editingHost
     })[0]
   })
 )
@@ -54,7 +54,7 @@ export default class ShellEditForm extends Component {
     const {handleSubmit} = this.props;
     return (
       <div>
-        <ShellForm {...this.props}  handleSubmit={handleSubmit(this.handleFormSubmit.bind(this))} />
+        <ShellForm {...this.props} hideReset={true} handleSubmit={handleSubmit(this.handleFormSubmit.bind(this))} />
       </div>
     );
   }
