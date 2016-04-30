@@ -10,7 +10,7 @@ export default class GroupList extends Component {
     initiallyOpen: PropTypes.bool,
     items: PropTypes.array.isRequired,
     style: PropTypes.object,
-    handleOpen: PropTypes.func.isRequired
+    handleFilter: PropTypes.func.isRequired
   }
 
   render() {
@@ -31,7 +31,7 @@ export default class GroupList extends Component {
               <ListItem
                 primaryText={<PrimaryText name={item} />}
                 leftIcon={<FolderIcon />}
-                onTouchTap={this.props.handleOpen(item)}
+                onTouchTap={this.props.handleFilter(item)}
               />
             </div>
           )
