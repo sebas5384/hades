@@ -1,3 +1,5 @@
+import {FILTER} from '../actions/group'
+
 import {
   SYNC_ITEMS,
   ADD,
@@ -7,11 +9,17 @@ import {
 
 const initialState = {
   items: [],
-  showing: 'sebas'
+  active: 'all'
 }
 
 export default function reducer(state = initialState, action) {
   switch (action.type) {
+
+    case FILTER:
+      return {
+        ...state,
+        active: action.payload
+      }
 
     case SYNC_ITEMS:
 

@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import GroupList from '../components/GroupList';
 import {showEditForm, removeAndSyncToLocal as removeShell} from '../actions/shell';
+import {filter as filterGroup} from '../actions/group';
 import {bindActionCreators} from 'redux'
 import {connect} from 'react-redux'
 
@@ -8,15 +9,14 @@ import {connect} from 'react-redux'
   state => ({
     items: state.group.items
   }),
-  dispatch => bindActionCreators({showEditForm, removeShell}, dispatch)
+  dispatch => bindActionCreators({showEditForm, removeShell, filterGroup}, dispatch)
 )
 export default class ShellListContainer extends Component {
 
-  handleOpen(name) {
-    // const showEditFormAction = this.props.showEditForm
+  handleFilter(name) {
+    const filterGroupAction = this.props.filterGroup
     return () => {
-      // showEditFormAction(name)
-      console.log('=> Open: ' + name)
+      filterGroupAction(name)
     }
   }
 
@@ -29,7 +29,7 @@ export default class ShellListContainer extends Component {
 
     return (
       <GroupList {...this.props}
-        handleOpen={this.handleOpen.bind(this)}
+        handleFilter={this.handleFilter.bind(this)}
         subheader={subheader}
         items={items} />
     );
