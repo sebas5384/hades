@@ -7,7 +7,8 @@ import {connect} from 'react-redux'
 
 @connect(
   state => ({
-    items: state.group.items
+    items: state.group.items,
+    active: state.group.active
   }),
   dispatch => bindActionCreators({showEditForm, removeShell, filterGroup}, dispatch)
 )
@@ -23,7 +24,7 @@ export default class ShellListContainer extends Component {
   render() {
     const subheader = 'Your Groups';
 
-    const { items } = this.props;
+    const { items, active } = this.props;
 
     // const itemsSorted = items.slice().reverse()
 
@@ -31,7 +32,8 @@ export default class ShellListContainer extends Component {
       <GroupList {...this.props}
         handleFilter={this.handleFilter.bind(this)}
         subheader={subheader}
-        items={items} />
+        items={items}
+        active={active} />
     );
   }
 }
