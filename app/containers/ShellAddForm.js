@@ -43,9 +43,9 @@ export default class ShellAddForm extends Component {
   }
 
   render() {
-    const {handleSubmit} = this.props;
+    const {style, handleSubmit} = this.props;
     return (
-      <div>
+      <div style={style}>
         <ShellForm {...this.props} handleSubmit={handleSubmit(this.handleFormSubmit.bind(this))} />
       </div>
     );

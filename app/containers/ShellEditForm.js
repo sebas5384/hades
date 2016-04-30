@@ -51,9 +51,9 @@ export default class ShellEditForm extends Component {
   }
 
   render() {
-    const {handleSubmit} = this.props;
+    const {handleSubmit, style} = this.props;
     return (
-      <div>
+      <div style={style}>
         <ShellForm {...this.props} hideReset={true} handleSubmit={handleSubmit(this.handleFormSubmit.bind(this))} />
       </div>
     );

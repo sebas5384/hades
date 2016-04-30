@@ -5,9 +5,14 @@ import Home from '../components/Home';
 import ShellAddForm from '../containers/ShellAddForm';
 import ShellEditForm from '../containers/ShellEditForm';
 import ShellList from '../containers/ShellList';
+import GroupList from '../containers/GroupList';
 import Divider from 'material-ui/lib/divider';
+
 import FloatingActionButton from 'material-ui/lib/floating-action-button';
 import ContentAdd from 'material-ui/lib/svg-icons/content/add';
+import GridList from 'material-ui/lib/grid-list/grid-list';
+import GridTile from 'material-ui/lib/grid-list/grid-tile';
+
 
 import {
   showAddForm as showAddShellForm,
@@ -59,9 +64,14 @@ export default class HomePage extends Component {
   render() {
     const {showingShellForm, showingEditShellForm, shellItems} = this.props;
 
+    const groupListStyle = {
+      marginRight: 5,
+      width: '30%'
+    }
+
     const shellListStyle = {
-      marginTop: 10,
-      marginBottom: '3em'
+      flex: 1,
+      marginLeft: 5
     }
 
     const subheaderStyle = {
@@ -69,24 +79,38 @@ export default class HomePage extends Component {
       lineHeight: 4
     }
 
-    let shellAddActionButtonStyle = {
+    const shellAddActionButtonStyle = {
       position: 'fixed',
       right: '1em',
       top: '1em'
     }
 
+    const explorerWrapperStyle = {
+      display: 'flex',
+      alignContent: 'stretch',
+      flexDirection: 'row',
+      marginBottom: '3em'
+    }
+
+    const shellEditFormStyle = {
+      marginBottom: 10
+    }
+
     return (
       <div>
         {showingShellForm &&
-          <ShellAddForm />
+          <ShellAddForm style={shellEditFormStyle} />
         }
 
         {showingEditShellForm &&
-          <ShellEditForm />
+          <ShellEditForm style={shellEditFormStyle} />
         }
 
         {shellItems.length > 0 &&
-          <ShellList subheaderStyle={subheaderStyle} style={shellListStyle} />
+          <div style={explorerWrapperStyle}>
+            <GroupList subheaderStyle={subheaderStyle} style={groupListStyle} />
+            <ShellList subheaderStyle={subheaderStyle} style={shellListStyle} />
+          </div>
         }
 
         {shellItems.length > 0 &&
