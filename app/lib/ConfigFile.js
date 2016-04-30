@@ -2,9 +2,14 @@ import fs from 'fs'
 import sshConfig from 'ssh-config'
 
 const initialSettings = {
-  srcPath: '/Users/sebas/.ssh/config',
+  srcPath: getUserHome() + '/.ssh/config',
   startTag: "### HADES ### START ### DON'T EDIT ###",
   endTag: "### HADES ### END ### DON'T EDIT #####",
+}
+
+function getUserHome() {
+  const electronProcess = process
+  return electronProcess.env[(electronProcess.platform == 'win32') ? 'USERPROFILE' : 'HOME'];
 }
 
 export default function ConfigFile(settings = initialSettings) {
