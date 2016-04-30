@@ -1,7 +1,7 @@
 import React, { Component, PropTypes } from 'react';
 import {reduxForm} from 'redux-form';
 import ShellForm, {fieldNames} from '../components/ShellForm';
-import {save as saveShell, hideEditForm} from '../actions/shell';
+import {saveAndSyncToLocal as saveShell, hideEditForm} from '../actions/shell';
 import {bindActionCreators} from 'redux'
 import {connect} from 'react-redux'
 

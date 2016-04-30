@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import ShellList from '../components/ShellList';
-import {showEditForm, remove as removeShell} from '../actions/shell';
+import {showEditForm, removeAndSyncToLocal as removeShell} from '../actions/shell';
 import {bindActionCreators} from 'redux'
 import {connect} from 'react-redux'
 
