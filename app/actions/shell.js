@@ -3,7 +3,7 @@ import uuid from 'uuid'
 import ConfigFile from '../lib/ConfigFile';
 
 export const LOAD = 'shell/LOAD'
-export const SYNC_FROM_LOCAL = 'shell/SYNC_FROM_LOCAL'
+export const SYNC_ITEMS = 'shell/SYNC_ITEMS'
 export const ADD = 'shell/ADD'
 export const SAVE = 'shell/SAVE'
 export const REMOVE = 'shell/REMOVE'
@@ -19,6 +19,45 @@ export function load(id) {
   }
 }
 
+export function addAndSyncToLocal(data) {
+  return (dispatch, getState) => {
+
+    // Add new item to the state.
+    dispatch(add(data))
+
+    // Get items from state after the add.
+    const items = getState().shell.items
+
+    dispatch(syncToLocal(items))
+  }
+}
+
+export function saveAndSyncToLocal(data) {
+  return (dispatch, getState) => {
+
+    // Save changed item to the state.
+    dispatch(save(data))
+
+    // Get items from state after the save.
+    const items = getState().shell.items
+
+    dispatch(syncToLocal(items))
+  }
+}
+
+export function removeAndSyncToLocal(data) {
+  return (dispatch, getState) => {
+
+    // Save changed item to the state.
+    dispatch(remove(data))
+
+    // Get items from state after the save.
+    const items = getState().shell.items
+
+    dispatch(syncToLocal(items))
+  }
+}
+
 export function add(data) {
   return {
     type: ADD,
@@ -29,12 +68,24 @@ export function add(data) {
   }
 }
 
+export function syncToLocal(items) {
+  const configFile = ConfigFile()
+
+  var updatedContent = configFile.update(items);
+  configFile.sync(updatedContent);
+
+  return {
+    type: SYNC_ITEMS,
+    payload: items
+  }
+}
+
 export function syncFromLocal() {
   const configFile = ConfigFile()
   const localConfigItems = configFile.loadFromLocal()
 
   return {
-    type: SYNC_FROM_LOCAL,
+    type: SYNC_ITEMS,
     payload: localConfigItems
   }
 }

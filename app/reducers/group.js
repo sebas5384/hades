@@ -1,5 +1,5 @@
 import {
-  SYNC_FROM_LOCAL,
+  SYNC_ITEMS,
   ADD,
   REMOVE,
   SAVE
@@ -13,12 +13,7 @@ const initialState = {
 export default function reducer(state = initialState, action) {
   switch (action.type) {
 
-    case ADD:
-
-    case SAVE:
-    case REMOVE:
-
-    case SYNC_FROM_LOCAL:
+    case SYNC_ITEMS:
 
       const duplicatedGroups = action.payload
         .filter(item => item.host.indexOf('.'))

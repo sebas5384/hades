@@ -5,7 +5,7 @@ import {
   ADD,
   SAVE,
   REMOVE,
-  SYNC_FROM_LOCAL,
+  SYNC_ITEMS,
   SHOW_ADD_FORM,
   HIDE_ADD_FORM,
   SHOW_EDIT_FORM,
@@ -24,32 +24,24 @@ export default function reducer(state = initialState, action) {
   const configFile = ConfigFile()
 
   switch (action.type) {
+
     case ADD:
-
-      // @TODO: Avoid duplicated.
-
       const items = state.items.concat(action.payload);
       const newState = {
         ...state,
-        items: items,
+        items,
         initiallyOpen: true
       }
-
-      // @TODO: Should have an action.
-      var updatedContent = configFile.update(items);
-      // Sync to config file.
-      configFile.sync(updatedContent);
 
       return newState;
 
     case SAVE:
       const newItems = state.items.map(shell => {
-        return shell.id === action.payload.id ? { ...shell, ...action.payload } : shell
+        // @TODO: Check if it's dealing with empty values.
+        return (shell.id === action.payload.id)
+          ? { ...shell, ...action.payload }
+          : shell
       })
-
-      var updatedContent = configFile.update(newItems)
-      // Sync to config file.
-      configFile.sync(updatedContent)
 
       return {
         ...state,
@@ -61,16 +53,12 @@ export default function reducer(state = initialState, action) {
         return shell.id != action.payload.id
       })
 
-      var updatedContent = configFile.update(notRemovedItems)
-      // Sync to config file.
-      configFile.sync(updatedContent)
-
       return {
         ...state,
         items: notRemovedItems
       }
 
-    case SYNC_FROM_LOCAL:
+    case SYNC_ITEMS:
       return {
         ...state,
         items: action.payload,
