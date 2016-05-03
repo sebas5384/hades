@@ -1,9 +1,9 @@
 {
-  "name": "electron-react-boilerplate",
-  "productName": "ElectronReact",
+  "name": "hades-app",
+  "productName": "Hades",
   "CompanyName": "Hades inc.",
   "version": "0.8.0",
-  "description": "Electron application boilerplate based on React, React Router, Webpack, React Hot Loader for rapid application development",
+  "description": "Electron App to manage your SSH alias hosts, and their keys. Shell Keeper.",
   "main": "main.js",
   "scripts": {
     "test": "cross-env NODE_ENV=test mocha --compilers js:babel-core/register --recursive --require ./test/setup.js test/**/*.spec.js",

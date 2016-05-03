@@ -12,6 +12,41 @@ Using an [Electron](http://electron.atom.io/) application boilerplate based on [
 
 [![demo video](http://img.youtube.com/vi/CwXou5kUYJo/0.jpg)](http://www.youtube.com/watch?v=CwXou5kUYJo)
 
+## Contributing
+
+### Install
+```
+npm install
+```
+
+### Start Hot server
+
+```
+npm run hot-server
+```
+
+### Start Electron
+
+```
+npm run start-hot
+```
+
+... or run the server and electron at the same time
+
+
+```
+npm run dev
+```
+
+and it will open the electron App ready to develop \m/
+
+### Package the App
+
+
+```
+npm run package
+```
+
 ## License
 
 GNU General Public License (GPL) version 3.
