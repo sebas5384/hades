@@ -15,6 +15,16 @@ Using an [Electron](http://electron.atom.io/) application boilerplate based on [
 ## Contributing
 
 ### Install
+
+#### GNU/Linux
+
+On Linux you'll need gyp and g++ installed. Fro ubuntu based distros you can simply run
+```
+sudo apt-get install g++ gyp
+```
+
+#### All O.S's
+
 ```
 npm install
 ```
