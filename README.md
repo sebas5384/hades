@@ -12,6 +12,12 @@ Using an [Electron](http://electron.atom.io/) application boilerplate based on [
 
 [![demo video](http://img.youtube.com/vi/CwXou5kUYJo/0.jpg)](http://www.youtube.com/watch?v=CwXou5kUYJo)
 
+## Download
+
+- [MacOSX x64](https://github.com/sebas5384/hades/releases/download/0.1/Hades-Darwin-MacOSX-x64-0.1.zip)
+- [GNU/Linux x64](https://github.com/sebas5384/hades/releases/download/0.1/Hades-GNU-Linux-x64-0.1.zip)
+- Windows ... _not yet_
+
 ## Contributing
 
 ### Install
