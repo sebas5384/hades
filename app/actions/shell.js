@@ -82,12 +82,22 @@ export function syncToLocal(items) {
 
 export function syncFromLocal() {
   const configFile = ConfigFile()
-  const localConfigItems = configFile.loadFromLocal()
-
-  return {
-    type: SYNC_ITEMS,
-    payload: localConfigItems
+  try {
+    const localConfigItems = configFile.loadFromLocal()
+    return {
+      type: SYNC_ITEMS,
+      payload: localConfigItems
+    }
   }
+  catch (e) {
+    configFile.sync('# Created by Hades.')
+
+    return {
+      type: SYNC_ITEMS,
+      payload: []
+    }
+  }
+
 }
 
 export function save(data) {
