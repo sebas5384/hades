@@ -100,7 +100,8 @@ function pack(plat, arch, cb) {
     arch,
     prune: true,
     'app-version': pkg.version || DEFAULT_OPTS.version,
-    out: `release/${plat}-${arch}`
+    out: `release/${plat}-${arch}`,
+    protocols: [{ name: pkg.productName, schemes: ['shell'] }]
   });
 
   packager(opts, cb);
