@@ -142,7 +142,8 @@ export function remove(id) {
 export function share(data) {
 
   const dataEncoded = btoa(JSON.stringify(data))
-  const shellUrl = 'shell://' + dataEncoded
+  const uriEncoded = encodeURIComponent(dataEncoded)
+  const shellUrl = 'shell://' + uriEncoded
   clipboard.writeText(shellUrl)
 
   return {

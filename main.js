@@ -46,7 +46,7 @@ app.on('ready', () => {
   mainWindow = new BrowserWindow({
     width: 600, height: 500,
     minWidth: 600, minHeight: 300
-  });
+  })
 
   mainWindow.webContents.on('did-finish-load', () => {
     if (shellUrlToOpen) {

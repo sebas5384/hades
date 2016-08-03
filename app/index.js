@@ -26,7 +26,8 @@ render(
 const { ipcRenderer } = require('electron');
 
 ipcRenderer.on('shell-url', (e, url) => {
-  const decodedUrl = atob(url)
+  const decodedUri = decodeURIComponent(url)
+  const decodedUrl = atob(decodedUri)
   const shellData = JSON.parse(decodedUrl)
 
   const errors = shellEditFormValidation(shellData)
