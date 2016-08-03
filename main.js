@@ -44,8 +44,8 @@ app.on('open-url', (event, url) => {
 
 app.on('ready', () => {
   mainWindow = new BrowserWindow({
-    width: 600, height: 500,
-    minWidth: 600, minHeight: 300
+    width: 700, height: 500,
+    minWidth: 700, minHeight: 300
   })
 
   mainWindow.webContents.on('did-finish-load', () => {

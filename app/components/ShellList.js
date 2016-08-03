@@ -9,11 +9,14 @@ import DeviceStorage from 'material-ui/lib/svg-icons/device/devices'
 import CommunicationVpnKey from 'material-ui/lib/svg-icons/communication/vpn-key'
 import FileCloud from 'material-ui/lib/svg-icons/file/cloud'
 import ActionAccountCircle from 'material-ui/lib/svg-icons/action/account-box'
+import IconCopy from 'material-ui/lib/svg-icons/content/content-copy'
+import IconEdit from 'material-ui/lib/svg-icons/content/create'
+import IconDelete from 'material-ui/lib/svg-icons/content/clear'
 import IconMenu from 'material-ui/lib/menus/icon-menu'
 import Colors from 'material-ui/lib/styles/colors'
 import MenuItem from 'material-ui/lib/menus/menu-item'
 import MoreVertIcon from 'material-ui/lib/svg-icons/navigation/more-vert'
-import IconButton from 'material-ui/lib/icon-button';
+import IconButton from 'material-ui/lib/icon-button'
 
 
 export default class ShellList extends Component {
@@ -61,16 +64,16 @@ export default class ShellList extends Component {
 
     const iconButtonElement = (
       <IconButton
-        touch={true}>
+        touch={ true }>
         <MoreVertIcon color={Colors.grey400} />
       </IconButton>
     )
 
     return (
       <IconMenu iconButtonElement={iconButtonElement}>
-        <MenuItem onTouchTap={this.props.handleShowEditForm(item.id)}>Edit</MenuItem>
-        <MenuItem onTouchTap={this.props.handleRemove(item.id)}>Delete</MenuItem>
-        <MenuItem onTouchTap={this.props.handleShare(item)}>Share</MenuItem>
+        <MenuItem leftIcon={ <IconEdit /> } onTouchTap={this.props.handleShowEditForm(item.id)}>Edit</MenuItem>
+        <MenuItem leftIcon={ <IconDelete /> } onTouchTap={this.props.handleRemove(item.id)}>Delete</MenuItem>
+        <MenuItem leftIcon={ <IconCopy /> } onTouchTap={this.props.handleShare(item)}>Copy link</MenuItem>
       </IconMenu>
     )
   }

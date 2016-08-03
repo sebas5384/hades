@@ -20,7 +20,7 @@ import {
   showEditForm as showEditShellForm,
   hideEditForm as hideEditShellForm,
   syncFromLocal
-} from '../actions/shell';
+} from '../actions/shell'
 
 @connect(
   state => ({
@@ -65,8 +65,7 @@ export default class HomePage extends Component {
     const {showingShellForm, showingEditShellForm, shellItems} = this.props;
 
     const groupListStyle = {
-      marginRight: 5,
-      width: '30%'
+      marginRight: 5
     }
 
     const shellListStyle = {
