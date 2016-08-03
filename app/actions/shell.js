@@ -1,12 +1,14 @@
 import fs from 'fs'
 import uuid from 'uuid'
 import ConfigFile from '../lib/ConfigFile';
+const { clipboard } = require('electron');
 
 export const LOAD = 'shell/LOAD'
 export const SYNC_ITEMS = 'shell/SYNC_ITEMS'
 export const ADD = 'shell/ADD'
 export const SAVE = 'shell/SAVE'
 export const REMOVE = 'shell/REMOVE'
+export const SHARE = 'shell/SHARE'
 export const SHOW_ADD_FORM = 'shell/ADD/form/SHOW'
 export const HIDE_ADD_FORM = 'shell/ADD/form/HIDE'
 export const SHOW_EDIT_FORM = 'shell/EDIT/form/SHOW'
@@ -39,6 +41,21 @@ export function saveAndSyncToLocal(data) {
     dispatch(save(data))
 
     // Get items from state after the save.
+    const items = getState().shell.items
+
+    dispatch(syncToLocal(items))
+  }
+}
+
+export function importAndSyncToLocal(data) {
+  return (dispatch, getState) => {
+    // Add new item to the state.
+    dispatch({
+      type: ADD,
+      payload: data
+    })
+
+    // Get items from state after the add.
     const items = getState().shell.items
 
     dispatch(syncToLocal(items))
@@ -119,6 +136,19 @@ export function remove(id) {
       type: REMOVE,
       payload: {id}
     })
+  }
+}
+
+export function share(data) {
+
+  const dataEncoded = btoa(JSON.stringify(data))
+  const uriEncoded = encodeURIComponent(dataEncoded)
+  const shellUrl = 'shell://' + uriEncoded
+  clipboard.writeText(shellUrl)
+
+  return {
+    type: SHARE,
+    payload: shellUrl
   }
 }
 

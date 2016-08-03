@@ -12,6 +12,7 @@ const shell = electron.shell;
 let menu;
 let template;
 let mainWindow = null;
+let shellUrlToOpen = null;
 
 
 crashReporter.start();
@@ -25,16 +26,39 @@ app.on('window-all-closed', () => {
   if (process.platform !== 'darwin') app.quit();
 });
 
+app.on('open-url', (event, url) => {
+  const matches = url.match(/^shell\:\/\/(.*)/)
+  if (!matches) {
+    return
+  }
+
+  event.preventDefault()
+
+  shellUrlToOpen = matches[1]
+
+  if (shellUrlToOpen && mainWindow && mainWindow.webContents) {
+    mainWindow.webContents.send('shell-url', shellUrlToOpen)
+    shellUrlToOpen = null
+  }
+})
 
 app.on('ready', () => {
   mainWindow = new BrowserWindow({
-    width: 600, height: 500,
-    minWidth: 600, minHeight: 300
-  });
+    width: 700, height: 500,
+    minWidth: 700, minHeight: 300
+  })
+
+  mainWindow.webContents.on('did-finish-load', () => {
+    if (shellUrlToOpen) {
+      mainWindow.webContents.send('shell-url', shellUrlToOpen)
+      shellUrlToOpen = null
+    }
+  })
 
   mainWindow.loadURL(`file://${__dirname}/app/app.html`);
 
   mainWindow.on('closed', () => {
+    app.quit();
     mainWindow = null;
   });
 

@@ -8,6 +8,9 @@ import routes from './routes';
 import configureStore from './store/configureStore';
 import './app.global.css';
 
+import { importAndSyncToLocal } from './actions/shell'
+import shellEditFormValidation from './validations/ShellEditFormValidation'
+
 injectTapEventPlugin();
 
 const store = configureStore();
@@ -19,6 +22,22 @@ render(
   </Provider>,
   document.getElementById('root')
 );
+
+const { ipcRenderer } = require('electron');
+
+ipcRenderer.on('shell-url', (e, url) => {
+  const decodedUri = decodeURIComponent(url)
+  const decodedUrl = atob(decodedUri)
+  const shellData = JSON.parse(decodedUrl)
+
+  const errors = shellEditFormValidation(shellData)
+  if (Object.keys(errors).length) {
+    console.log(errors)
+    return
+  }
+
+  store.dispatch(importAndSyncToLocal(shellData))
+});
 
 if (process.env.NODE_ENV !== 'production') {
   // Use require because imports can't be conditional.

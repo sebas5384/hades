@@ -3,6 +3,7 @@ import {createValidator, required, minLength, maxLength, email, checked, equalsT
 
 const ShellEditFormValidation = createValidator({
   host: [required, minLength(4)],
-  hostName: [required, minLength(2)]
+  hostName: [required, minLength(2)],
+  id: [required]
 });
 export default memoize(10)(ShellEditFormValidation);

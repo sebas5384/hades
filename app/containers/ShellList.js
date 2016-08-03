@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import ShellList from '../components/ShellList';
-import {showEditForm, removeAndSyncToLocal as removeShell} from '../actions/shell';
+import {showEditForm, removeAndSyncToLocal as removeShell, share as shareShell} from '../actions/shell';
 import {bindActionCreators} from 'redux'
 import {connect} from 'react-redux'
 
@@ -25,7 +25,7 @@ import {connect} from 'react-redux'
       initiallyOpen: state.shell.initiallyOpen
     }
   },
-  dispatch => bindActionCreators({showEditForm, removeShell}, dispatch)
+  dispatch => bindActionCreators({showEditForm, removeShell, shareShell}, dispatch)
 )
 export default class ShellListContainer extends Component {
 
@@ -43,6 +43,13 @@ export default class ShellListContainer extends Component {
     }
   }
 
+  handleShare = (data) => {
+    const shareShellAction = this.props.shareShell
+    return () => {
+      shareShellAction(data)
+    }
+  }
+
   render() {
     const subheader = 'Your Shells';
     const { items } = this.props;
@@ -53,6 +60,7 @@ export default class ShellListContainer extends Component {
       <ShellList {...this.props}
         handleShowEditForm={this.handleShowEditForm.bind(this)}
         handleRemove={this.handleDelete.bind(this)}
+        handleShare={this.handleShare}
         subheader={subheader}
         items={itemsSorted} />
     );
