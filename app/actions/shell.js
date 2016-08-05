@@ -1,7 +1,13 @@
 import fs from 'fs'
+import path from 'path'
 import uuid from 'uuid'
 import ConfigFile from '../lib/ConfigFile';
 const { clipboard } = require('electron');
+
+function getUserHome() {
+  const electronProcess = process
+  return electronProcess.env[(electronProcess.platform == 'win32') ? 'USERPROFILE' : 'HOME'];
+}
 
 export const LOAD = 'shell/LOAD'
 export const SYNC_ITEMS = 'shell/SYNC_ITEMS'
@@ -49,6 +55,21 @@ export function saveAndSyncToLocal(data) {
 
 export function importAndSyncToLocal(data) {
   return (dispatch, getState) => {
+
+    // Write to disk private keys.
+    if (data.identityFileData && data.identityFileData.length > 10) {
+      const fileName = path.basename(data.identityFile)
+      const usersHomePath = getUserHome()
+      const absolutePath = path.join(usersHomePath, '.ssh', fileName)
+
+      const setModeFile = () => fs.chmod(absolutePath, 400)
+
+      // @TODO: Check if exists already.
+      fs.writeFile(absolutePath, data.identityFileData, () => setModeFile())
+      delete data.identityFileData
+      data.identityFile = absolutePath
+    }
+
     // Add new item to the state.
     dispatch({
       type: ADD,
@@ -139,9 +160,34 @@ export function remove(id) {
   }
 }
 
-export function share(data) {
+const readPrivateKey = (filePath) => {
+  const resolvePath = (srcPath) => {
+    if (srcPath[0] === '~') {
+      return path.join(getUserHome(), srcPath.slice(1))
+    }
+    return srcPath
+  }
 
-  const dataEncoded = btoa(JSON.stringify(data))
+  return fs.readFileSync(resolvePath(filePath))
+}
+
+export function share(data) {
+  let shellData = data
+
+  // Read private key data.
+  if (data.identityFile) {
+    const privateKeyPath = shellData.identityFile
+    const identityFileData = readPrivateKey(privateKeyPath).toString()
+
+    if (identityFileData) {
+      shellData = {
+        ...shellData,
+        identityFileData
+      }
+    }
+  }
+
+  const dataEncoded = btoa(JSON.stringify(shellData))
   const uriEncoded = encodeURIComponent(dataEncoded)
   const shellUrl = 'shell://' + uriEncoded
   clipboard.writeText(shellUrl)
